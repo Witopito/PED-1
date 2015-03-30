@@ -26,7 +26,7 @@ TListaCalendario::~TListaCalendario()
 // Sobrecarga del operador asignación
 /*TListaCalendario& TListaCalendario:: operator=(const TListaCalendario &t)
 {
-	if(!(this ==t))
+	if(!(*this ==t))
 	{
 		this->primero = t.primero;
 	}
@@ -34,26 +34,25 @@ TListaCalendario::~TListaCalendario()
 }*/
 
 // Sobrecarga del operador igualdad
-bool TListaCalendario::operator==(const TListaCalendario &l) // RECORREMOS HASTA QUE LOS DOS DEJEN DE APUNTAR AL SIGUIENTE
+bool TListaCalendario::operator==(const TListaCalendario &l) 
 {
 	bool distintos = true;
 	
 	TNodoCalendario* aux = this->primero;
 	TNodoCalendario* auxL = l.primero;
 	
-	while((aux != NULL && l.primero != NULL) || distintos == true)
+	while((aux != NULL && l.primero != NULL) || distintos == true) // RECORREMOS HASTA QUE LOS DOS DEJEN DE APUNTAR AL SIGUIENTE
 	{
 		
-		if(aux != auxL)
+		if(aux->c != auxL->c)
 		{
 			distintos =  false;
 		}
-		/*else
+		else 														// APUNTAMOS AL SIGUIENTE NODO
 		{
-			aux.primero =  siguiente;
-			auxL.primero = auxL.siguiente;
-				
-		}*/
+			aux =  aux->siguiente;
+			auxL = auxL->siguiente;		
+		}
 	}
 	
 	return distintos;
