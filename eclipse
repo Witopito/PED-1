@@ -1,0 +1,3 @@
+all: tad // añadir al makefile
+file -> new -> c++project
+makefile project-> empty project
