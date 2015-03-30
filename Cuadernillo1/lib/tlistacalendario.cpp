@@ -21,17 +21,33 @@ TListaCalendario::TListaCalendario(const TListaCalendario &l)
 //Destructor
 TListaCalendario::~TListaCalendario()
 {
-	this->primero = NULL;
-}
-// Sobrecarga del operador asignación
-/*TListaCalendario& TListaCalendario:: operator=(const TListaCalendario &t)
-{
-	if(!(*this ==t))
+	TNodoCalendario* aux;
+	
+	while(primero != NULL)
 	{
-		this->primero = t.primero;
+		aux = primero;
+		primero=primero->siguiente; // APUNTAMOS AL SIGUIENTE ELEMENTO
+		delete aux;
+	}
+}
+
+// Sobrecarga del operador asignación
+TListaCalendario& TListaCalendario:: operator=(const TListaCalendario &t)
+{
+	if(this!=&t)
+	{
+		this->~TListaCalendario();	// LLAMADA AL DESTRUCTOR
+		
+		TNodoCalendario * aux = t.primero;
+		
+		while(primero != NULL)  
+		{
+			this->primero = aux; // COPIAMOS EN EL TEMPORAL EL ELEMENTO
+			aux = t.primero->siguiente; // APUNTAMOS AL SIGUIENTE ELEMENTO
+		}
 	}
 	return *this;
-}*/
+}
 
 // Sobrecarga del operador igualdad
 bool TListaCalendario::operator==(const TListaCalendario &l) 
@@ -51,7 +67,8 @@ bool TListaCalendario::operator==(const TListaCalendario &l)
 		else 														// APUNTAMOS AL SIGUIENTE NODO
 		{
 			aux =  aux->siguiente;
-			auxL = auxL->siguiente;		
+			auxL = auxL->siguiente;
+				
 		}
 	}
 	
