@@ -16,7 +16,14 @@ TListaCalendario::TListaCalendario()
 // Constructor de copia
 TListaCalendario::TListaCalendario(const TListaCalendario &l)
 {
-	this->primero = l.primero;
+	TNodoCalendario * aux = l.primero;
+	
+	while(primero != NULL)  
+	{
+		this->primero = aux; // COPIAMOS EN EL TEMPORAL EL ELEMENTO
+		aux = l.primero->siguiente; // APUNTAMOS AL SIGUIENTE ELEMENTO
+	}
+	aux = NULL;
 }
 //Destructor
 TListaCalendario::~TListaCalendario()
@@ -27,8 +34,9 @@ TListaCalendario::~TListaCalendario()
 	{
 		aux = primero;
 		primero=primero->siguiente; // APUNTAMOS AL SIGUIENTE ELEMENTO
-		delete aux;
+		delete aux; 				// ELIMINAMOS DE MEMORIA
 	}
+	aux = NULL;
 }
 
 // Sobrecarga del operador asignación
@@ -45,6 +53,8 @@ TListaCalendario& TListaCalendario:: operator=(const TListaCalendario &t)
 			this->primero = aux; // COPIAMOS EN EL TEMPORAL EL ELEMENTO
 			aux = t.primero->siguiente; // APUNTAMOS AL SIGUIENTE ELEMENTO
 		}
+		
+		aux = NULL; // ELIMINAMOS EL PUNTERO
 	}
 	return *this;
 }
@@ -75,13 +85,50 @@ bool TListaCalendario::operator==(const TListaCalendario &l)
 	return distintos;
 }
 //Sobrecarga del operador suma
-/*TListaCalendario TListaCalendario::operator+ (const TListaCalendario &);
+//TListaCalendario TListaCalendario::operator+ (const TListaCalendario &)
+//{
+//}
 //Sobrecarga del operador resta
-TListaCalendario TListaCalendario::operator- (const TListaCalendario &);
+//TListaCalendario TListaCalendario::operator- (const TListaCalendario &);
 // Inserta el elemento en la posición que le corresponda dentro de la lista
-bool TListaCalendario:: Insertar(const TCalendario &);
+bool TListaCalendario:: Insertar(const TCalendario &calendario)
+{
+	bool ok = false;
+	
+	TNodoCalendario * aux =  new TNodoCalendario();
+	
+	
+	if(aux != NULL)
+	{
+		while(aux!=NULL || ok==false)
+		{
+			if(aux->c>calendario) // SE CREA UN NODO NUEVO EN MEDIO
+			{
+				TNodoCalendario *nAx; // CREAMOS NUEVO NODO
+				nAx->c = calendario;
+				nAx->siguiente = aux->siguiente; // APUNTAMOS AL SIGUIENTE
+				
+				aux = nAx; // APUNTAMOS AL NUEVO NODO
+			}
+			else
+			{
+				aux = aux->siguiente;
+			}
+
+		}
+	}
+	else
+	{
+		TNodoCalendario *nAx; // CREAMOS NUEVO NODO
+		nAx->c = calendario;
+		nAx->siguiente = NULL; // APUNTAMOS AL SIGUIENTE
+		
+		aux = nAx;
+	}
+	return ok;
+}
 // Busca y borra el elemento
-bool TListaCalenario:: Borrar(const TCalendario &);
+/*bool TListaCalendario:: Borrar(const TCalendario &);
 // Borra el elemento que ocupa la posición indicada
 //bool Borrar (TListaPos &);
 //Borra todos los Calendarios con fecha ANTERIOR a la pasada.

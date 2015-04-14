@@ -9,6 +9,7 @@ using namespace std;
 int
 main(void)
 {
+	
   TCalendario a(10,10,2006, (char*) "mensaje 1");
   TCalendario b(11,10,2006, (char*) "mensaje 2");
   TCalendario c(12,10,2006, (char*) "mensaje 3");
@@ -24,15 +25,16 @@ main(void)
 
 
   TListaCalendario lista;
+  
   TListaCalendario lista2;
   TListaCalendario lista3;
-
+	
   lista.Insertar(a);
   lista.Insertar(b);
   lista.Insertar(c);
   lista.Insertar(d);
   lista.Insertar(e);
-
+/*
   lista2.Insertar(f);
   lista2.Insertar(g);
   lista2.Insertar(h);
@@ -41,6 +43,6 @@ main(void)
 
   lista3=lista.SumarSubl(4,2,lista2,0,1);
   
-  cout<<lista3<<endl;
+  cout<<lista3<<endl;*/
 
 }

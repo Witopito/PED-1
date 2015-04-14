@@ -516,6 +516,7 @@ char* TCalendario::Mensaje()
 
 ostream&  operator<<(ostream &s,const TCalendario &obj)
 {
+	cout << "llega al cout " << obj.dia <<endl;
 	s << setfill('0') << setw(2)<< obj.dia<<"/";
 	s << setfill('0') << setw(2)<< obj.mes<<"/";
 	s << obj.anyo;
