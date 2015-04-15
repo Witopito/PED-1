@@ -34,7 +34,8 @@ class TListaPos
 		TListaPos Siguiente();
 		// Posición vacía
 		bool EsVacia();
-
+		
+		friend class TNodoCalendario;
 
 };
 #endif

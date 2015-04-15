@@ -9,19 +9,50 @@
 #include "tlistapos.h"
 
 // Constructor por defecto
-TListaPos::TListaPos();
+TListaPos::TListaPos()
+{
+	pos = NULL;
+}
 // Constructor de copia
-TListaPos::TListaPos(const TListaPos &);
+TListaPos::TListaPos(const TListaPos &tlp)
+{
+	this->pos = tlp.pos;
+	
+}
 // Destructor
-TListaPos::~TListaPos();
+TListaPos::~TListaPos()
+{
+	this->pos = NULL;
+}
 // Sobrecarga del operador asignación
-TListaPos & TListaPos:: operator=(const TListaPos &);
+TListaPos & TListaPos:: operator=(const TListaPos &tlp)
+{
+	if(this != &tlp)
+	{
+		this->~TListaPos();
+		this->pos = tlp.pos;
+	}
+	
+	return *this;
+}
 // Sobrecarga del operador igualdad
-bool TListaPos::operator==(const TListaPos &);
+bool TListaPos::operator==(const TListaPos &tlp)
+{
+	if(&tlp.pos == &this->pos)
+		return true;
+	else 
+		return false;
+}
 // Sobrecarga del operador desigualdad
-bool TListaPos::operator!=(const TListaPos &);
+bool TListaPos::operator!=(const TListaPos &tlp)
+{
+	return !(tlp.pos==this->pos);
+}
 // Devuelve la posición siguiente
-TListaPos TListaPos::Siguiente();
+TListaPos TListaPos::Siguiente()
+{
+	return pos->siguiente;
+}
 // Posición vacía
 bool TListaPos::EsVacia()
 {

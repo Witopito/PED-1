@@ -84,6 +84,7 @@ bool TListaCalendario::operator==(const TListaCalendario &l)
 	
 	return distintos;
 }
+
 //Sobrecarga del operador suma
 //TListaCalendario TListaCalendario::operator+ (const TListaCalendario &)
 //{
@@ -93,39 +94,9 @@ bool TListaCalendario::operator==(const TListaCalendario &l)
 // Inserta el elemento en la posición que le corresponda dentro de la lista
 bool TListaCalendario:: Insertar(const TCalendario &calendario)
 {
-	bool ok = false;
 	
-	TNodoCalendario * aux =  new TNodoCalendario();
-	
-	
-	if(aux != NULL)
-	{
-		while(aux!=NULL || ok==false)
-		{
-			if(aux->c>calendario) // SE CREA UN NODO NUEVO EN MEDIO
-			{
-				TNodoCalendario *nAx; // CREAMOS NUEVO NODO
-				nAx->c = calendario;
-				nAx->siguiente = aux->siguiente; // APUNTAMOS AL SIGUIENTE
-				
-				aux = nAx; // APUNTAMOS AL NUEVO NODO
-			}
-			else
-			{
-				aux = aux->siguiente;
-			}
 
-		}
-	}
-	else
-	{
-		TNodoCalendario *nAx; // CREAMOS NUEVO NODO
-		nAx->c = calendario;
-		nAx->siguiente = NULL; // APUNTAMOS AL SIGUIENTE
-		
-		aux = nAx;
-	}
-	return ok;
+	return true;
 }
 // Busca y borra el elemento
 /*bool TListaCalendario:: Borrar(const TCalendario &);
