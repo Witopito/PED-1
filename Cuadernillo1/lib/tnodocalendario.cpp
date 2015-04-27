@@ -18,8 +18,14 @@ TNodoCalendario::TNodoCalendario ()
 // Constructor de copia
 TNodoCalendario::TNodoCalendario (const TNodoCalendario &t)
 {
-	this->c = t.c;
-	this->siguiente = t.siguiente;
+	if(siguiente!=NULL)
+	{
+		delete siguiente;
+	}	
+	
+	c=t.c;
+	
+	siguiente = t.siguiente;
 }
 // Destructor
 TNodoCalendario::~TNodoCalendario ()

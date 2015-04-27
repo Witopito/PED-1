@@ -13,6 +13,8 @@ using namespace std;
 
 class TNodoCalendario
 {
+	friend class TListaCalendario; 
+	friend class TListaPos;
   private:
 	TCalendario c; // Uso de LAYERING sobre la clase
 	TNodoCalendario *siguiente;
@@ -27,7 +29,7 @@ class TNodoCalendario
 	// Sobrecarga del operador asignación
 	TNodoCalendario & operator=(const TNodoCalendario &);
 	
-	friend class TListaCalendario;
+	
 
 
 };

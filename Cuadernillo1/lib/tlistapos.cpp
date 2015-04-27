@@ -51,7 +51,9 @@ bool TListaPos::operator!=(const TListaPos &tlp)
 // Devuelve la posición siguiente
 TListaPos TListaPos::Siguiente()
 {
-	return pos->siguiente;
+	TListaPos aux;
+	aux.pos = this->pos->siguiente;
+	return aux;
 }
 // Posición vacía
 bool TListaPos::EsVacia()
