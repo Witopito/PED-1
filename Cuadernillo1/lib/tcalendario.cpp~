@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include "TCalendario.h"
+#include "tcalendario.h"
 using namespace std;
 
 TCalendario::TCalendario ()
@@ -115,7 +115,7 @@ TCalendario::~TCalendario()
 }
 
 // Sobrecarga del operador asignación
-TCalendario& TCalendario:: operator=(const TCalendario &t) // PETA CUANDO ES NULL
+TCalendario& TCalendario:: operator=(const TCalendario &t) 
 {
 
 	if (this != &t)
@@ -185,7 +185,7 @@ TCalendario TCalendario:: operator+(int n)
 	return *this;
 }
 
-// FALLAAA LE FALTA RESTAR 1
+
 // Sobrecarga del operador RESTA de fecha - un número de dias;
 TCalendario TCalendario:: operator-(int n)
 {
@@ -194,26 +194,28 @@ TCalendario TCalendario:: operator-(int n)
 	if((tAux.dia-n)<1)
 	{
 
-		while(n>=0)
+		while(n>0)
 		{
 			if(tAux.mes<=1 && tAux.dia<=1)
 			{
 				tAux.anyo-= 1;
 				tAux.mes = 12;
 				tAux.dia = compruebaFecha(tAux.mes,tAux.anyo);
-				n--;
+
 			}
 			else if(tAux.dia<=1)
 			{
 				tAux.mes-=1;
 				tAux.dia = compruebaFecha(tAux.mes,tAux.anyo);
-				n--;
+				
 			}
 			else
 			{
 				tAux.dia-=1;
-				n--;
+				
 			}
+			n--;
+	
 		}
 	}
 	else
@@ -261,7 +263,7 @@ TCalendario TCalendario:: operator--(int t)
 		return tC;
 }
 
-// FALLAAA
+
 // Modifica la fecha decrementándola en un día (con predecremento);
 TCalendario& TCalendario:: operator--(void)
 {
@@ -304,11 +306,25 @@ bool TCalendario::ModMensaje(char *mens)
 	}
 }
 
-bool TCalendario::compara(TCalendario t)
+bool TCalendario::compara(const TCalendario &t)
 {
 	bool ok = false;
 
 	if((t.dia==dia) && (t.mes==mes) && (t.anyo==anyo))
+	{
+		ok = true;
+	}
+	else
+		ok = false;
+
+	return ok;
+}
+
+// Sobrecarga del operador igualdad;
+bool TCalendario::operator ==(const TCalendario &t)
+{
+	bool ok = false;
+	if(compara(t))
 	{
 		if(mensaje!=NULL && t.mensaje!=NULL )
 		{
@@ -331,15 +347,10 @@ bool TCalendario::compara(TCalendario t)
 		}
 	}
 	else
+	{
 		ok = false;
-
+	}
 	return ok;
-}
-
-// Sobrecarga del operador igualdad;
-bool TCalendario::operator ==(const TCalendario &t)
-{
-	return compara(t);
 }
 
 // Sobrecarga del operador desigualdad;
@@ -362,6 +373,30 @@ bool TCalendario:: esMayor(const TCalendario &t)
 	return mayor;
 }
 
+bool TCalendario:: esMayorCadena(const TCalendario &t2)
+{
+	bool esMayor = false;
+	
+	if(mensaje != NULL && t2.mensaje != NULL) // COMPARAMOS LOS MENSAJES
+	{
+		if(strcmp(mensaje,t2.mensaje)>0) // LA CADENA ES MAYOR
+			esMayor = true;
+		else if(strcmp(mensaje,t2.mensaje)<0) // LA CADENA ES MENOR
+			esMayor = false;
+		else 								 // LAS CADENAS SON IGUALES
+			esMayor = false;
+			
+	}
+	if((mensaje==NULL || t2.mensaje == NULL) && !(mensaje==NULL && t2.mensaje == NULL)) // SI UNO DE LOS 2 SON NULL
+	{
+		if(mensaje==NULL && t2.mensaje!=NULL)
+			esMayor = false;
+		if(mensaje!=NULL && t2.mensaje==NULL)
+			esMayor = true;
+	}
+	
+	return esMayor;
+}
 // Sobrecarga del operador >; (ver ACLARACIÓN sobre ORDENACIÓN)
 bool TCalendario:: operator>(const TCalendario &t2)
 {
@@ -369,18 +404,28 @@ bool TCalendario:: operator>(const TCalendario &t2)
 
 	if(this->compara(t2)) // SON IGUALES
 	{
-		if(mensaje != NULL && t2.mensaje != NULL) // COMPARAMOS LOS MENSAJES
+		
+		if(mensaje!=NULL && t2.mensaje!=NULL )
 		{
-			if(strcmp(mensaje,t2.mensaje)>0) // LA CADENA ES MAYOR
+			if(strcmp(mensaje,t2.mensaje)==0)
+			{
+				mayor = false;
+			}
+			if(strcmp(mensaje,t2.mensaje)>0)
+			{
 				mayor = true;
-			else if(strcmp(mensaje,t2.mensaje)<0) // LA CADENA ES MENOR
-				mayor = false;
-			else
-				mayor = false;
+			}
 		}
-		else
+		else if(mensaje==NULL && t2.mensaje==NULL)
 		{
 			mayor = false;
+		}
+		else if((mensaje==NULL || t2.mensaje == NULL) && !(mensaje==NULL && t2.mensaje == NULL)) // SI UNO DE LOS 2 SON NULL
+		{
+			if(mensaje==NULL && t2.mensaje!=NULL)
+				mayor = false;
+			if(mensaje!=NULL && t2.mensaje==NULL)
+				mayor = true;
 		}
 	}
 	else if(this->esMayor(t2)) // T1 ES MAYOR QUE T2
@@ -403,18 +448,28 @@ bool TCalendario:: operator<(const TCalendario &t2)
 
 	if(this->compara(t2)) // SON IGUALES
 	{
-		if(mensaje != NULL && t2.mensaje != NULL) // COMPARAMOS LOS MENSAJES
+
+		if(mensaje!=NULL && t2.mensaje!=NULL )
 		{
-			if(strcmp(mensaje,t2.mensaje)>0) // LA CADENA ES MAYOR
+			if(strcmp(mensaje,t2.mensaje)==0)
+			{
 				menor = false;
-			else if(strcmp(mensaje,t2.mensaje)<0) // LA CADENA ES MENOR
+			}
+			if(strcmp(mensaje,t2.mensaje)<0)
+			{
 				menor = true;
-			else
-				menor = false;
+			}
 		}
-		else
+		else if(mensaje==NULL && t2.mensaje==NULL)
 		{
 			menor = false;
+		}
+		else if((mensaje==NULL || t2.mensaje == NULL) && !(mensaje==NULL && t2.mensaje == NULL)) // SI UNO DE LOS 2 SON NULL
+		{
+			if(mensaje==NULL && t2.mensaje!=NULL)
+				menor = true;
+			if(mensaje!=NULL && t2.mensaje==NULL)
+				menor = false;
 		}
 	}
 	else if(this->esMayor(t2)) // T1 ES MAYOR QUE T2
@@ -461,6 +516,7 @@ char* TCalendario::Mensaje()
 
 ostream&  operator<<(ostream &s,const TCalendario &obj)
 {
+	cout << "llega al cout " << obj.dia <<endl;
 	s << setfill('0') << setw(2)<< obj.dia<<"/";
 	s << setfill('0') << setw(2)<< obj.mes<<"/";
 	s << obj.anyo;

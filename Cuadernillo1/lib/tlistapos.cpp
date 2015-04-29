@@ -16,7 +16,14 @@ TListaPos::TListaPos()
 // Constructor de copia
 TListaPos::TListaPos(const TListaPos &tlp)
 {
-	this->pos = tlp.pos;
+	if(pos!=NULL)
+	{
+		delete pos;
+	}
+	else
+	{
+		this->pos = tlp.pos;
+	}
 	
 }
 // Destructor
@@ -29,7 +36,7 @@ TListaPos & TListaPos:: operator=(const TListaPos &tlp)
 {
 	if(this != &tlp)
 	{
-		this->~TListaPos();
+
 		this->pos = tlp.pos;
 	}
 	

@@ -110,8 +110,9 @@ TCalendario::~TCalendario()
 	if (mensaje != NULL)
 	{
 		delete[] this->mensaje;
-		mensaje = NULL;
 	}
+	mensaje = NULL;
+	
 }
 
 // Sobrecarga del operador asignación
@@ -120,11 +121,11 @@ TCalendario& TCalendario:: operator=(const TCalendario &t)
 
 	if (this != &t)
 	{
-		(*this).~TCalendario();
+		this->~TCalendario();
 		this->dia=t.dia;
 		this->mes=t.mes;
 		this->anyo=t.anyo;
-
+		
 		if(t.mensaje!=NULL)
 		{
 			this->mensaje =  new char[strlen(t.mensaje)+1];
@@ -135,8 +136,8 @@ TCalendario& TCalendario:: operator=(const TCalendario &t)
 			this->mensaje = NULL;
 		}
 	}
-
-	return *this;
+	
+	return (*this);
 }
 
 // Sobrecarga del operador SUMA de fecha + un número de dias;
@@ -171,7 +172,6 @@ TCalendario TCalendario:: operator+(int n)
 				n--;
 			}
 		}
-
 	}
 	else // INCREMENTAMOS LA EFICIENCIA CUANDO LLAMAMOS AL OPERADOR++
 	{
@@ -215,7 +215,6 @@ TCalendario TCalendario:: operator-(int n)
 				
 			}
 			n--;
-	
 		}
 	}
 	else
@@ -234,7 +233,7 @@ TCalendario TCalendario:: operator-(int n)
 	this->mes = tAux.mes;
 	this->anyo = tAux.anyo;
 
-	return *this;
+	return (tAux);
 }
 
 // Modifica la fecha incrementandola en un dia (con postincremento);
@@ -253,14 +252,13 @@ TCalendario& TCalendario:: operator++(void)
 	return *this;
 }
 
-// FALLAAA
+
 // Modifica la fecha decrementándola en un dia (con postdecremento);
-TCalendario TCalendario:: operator--(int t)
+TCalendario TCalendario:: operator--(const int t)
 {
 	TCalendario tC(*this); // OBJETO TEMPORAL
 
-		*this = tC - 1;
-		return tC;
+	*this = (*this) - 1;return tC;
 }
 
 
@@ -305,6 +303,7 @@ bool TCalendario::ModMensaje(char *mens)
 		return false;
 	}
 }
+
 
 bool TCalendario::compara(const TCalendario &t)
 {
@@ -516,7 +515,6 @@ char* TCalendario::Mensaje()
 
 ostream&  operator<<(ostream &s,const TCalendario &obj)
 {
-	cout << "llega al cout " << obj.dia <<endl;
 	s << setfill('0') << setw(2)<< obj.dia<<"/";
 	s << setfill('0') << setw(2)<< obj.mes<<"/";
 	s << obj.anyo;

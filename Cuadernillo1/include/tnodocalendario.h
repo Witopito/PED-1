@@ -29,8 +29,6 @@ class TNodoCalendario
 	// Sobrecarga del operador asignación
 	TNodoCalendario & operator=(const TNodoCalendario &);
 	
-	
-
 
 };
 #endif

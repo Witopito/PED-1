@@ -6,14 +6,18 @@
  */
 
 #ifndef TLISTACALENDARIO_H_
-#define TTLISTACALENDARIO_H_
+#define TLISTACALENDARIO_H_
 
 #include "tcalendario.h"
 #include "tnodocalendario.h"
+#include "tlistapos.h"
 using namespace std;
 
 class TListaCalendario 
 {
+  friend class TNodoCalendario;
+  friend class TListaPos;
+  
   private:
 	TNodoCalendario *primero;
   public:
@@ -25,7 +29,6 @@ class TListaCalendario
 	~TListaCalendario();
 	// Sobrecarga del operador asignación
 	TListaCalendario & operator=(const TListaCalendario &);
-
 	// Sobrecarga del operador igualdad
 	bool operator==(const TListaCalendario &);
 	//Sobrecarga del operador suma
@@ -41,17 +44,17 @@ class TListaCalendario
 	//Borra todos los Calendarios con fecha ANTERIOR a la pasada.
 	bool Borrar(int,int,int);
 	// Devuelve true si la lista está vacía, false en caso contrario
-	bool EsVacia();
+	bool EsVacia() const;
 	// Obtiene el elemento que ocupa la posición indicada
-	//TCalendario Obtener(TListaPos &)
+	TCalendario Obtener(const TListaPos &);
 	// Devuelve true si el Calendario está en la lista.
 	bool Buscar(TCalendario &);
 	// Devuelve la longitud de la lista
 	int Longitud();
 	// Devuelve la primera posición en la lista
-	//TListaPos Primera();
+	TListaPos Primera() const;
 	// Devuelve la última posición en la lista
-	//TListaPos Ultima();
+	TListaPos Ultima()const;
 	// Suma de dos sublistas en una nueva lista
 	TListaCalendario SumarSubl (int I_L1, int F_L1, TListaCalendario & L2, int I_L2, int F_L2);
 	// Extraer un rango de nodos de la lista
@@ -59,7 +62,7 @@ class TListaCalendario
 	//Sobrecarga del operador salida
 	friend ostream & operator<<(ostream &, TListaCalendario &);
 	
-	friend class TNodoCalendario;
+	
 
 
 

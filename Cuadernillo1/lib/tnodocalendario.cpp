@@ -15,6 +15,7 @@ TNodoCalendario::TNodoCalendario ()
 	this->c = TCalendario();
 	this->siguiente = NULL;
 }
+
 // Constructor de copia
 TNodoCalendario::TNodoCalendario (const TNodoCalendario &t)
 {
@@ -36,12 +37,17 @@ TNodoCalendario::~TNodoCalendario ()
 // Sobrecarga del operador asignación
 TNodoCalendario & TNodoCalendario::operator=(const TNodoCalendario &t)
 {
-	if(this != &t)
-	{
-		this->~TNodoCalendario();
-		this->c = t.c;
-		this->siguiente = t.siguiente;
-	}
+	if (siguiente!=NULL)
+    {
+		delete siguiente;
+    }
+       
+    if (this!=NULL)
+    {
+		c=t.c;
+        siguiente=t.siguiente;
+    }
+
 	return *this;
 }
 

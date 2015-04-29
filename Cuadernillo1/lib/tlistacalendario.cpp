@@ -94,33 +94,84 @@ bool TListaCalendario::operator==(const TListaCalendario &l)
 // Inserta el elemento en la posición que le corresponda dentro de la lista
 bool TListaCalendario:: Insertar(const TCalendario &calendario)
 {
+	//TCalendario *tcal;
+	//tcal = &primero->c;
 	
+	bool insertado = false; // NO EXISTE EL ELEMENTO
+	
+	TListaPos tPos,tAnt;
+	
+	tPos = this->Primera(); // INTRODUCIMOS PRIMER NODO	
 
-	return true;
+	if(tPos.pos->c == calendario)
+		return true;
+	
+	while(tPos.EsVacia() && !insertado)
+	{		
+		if(Obtener(tPos) > calendario && !(Obtener(tPos) == calendario))
+		{
+			
+			TNodoCalendario *tn = new TNodoCalendario();
+			
+			tn->c = calendario; 
+			
+			tn->siguiente = tPos.Siguiente().pos; // NUEVO APUNTA A SIGUIENTE
+			
+			tAnt.pos = tn; 			// ANTERIOR APUNTA A NUEVO
+			
+			insertado = true;
+		}
+		else
+		{
+			tAnt = tPos;
+			tPos = tPos.Siguiente();
+		}
+	}
+	
+	return insertado;
 }
 // Busca y borra el elemento
-/*bool TListaCalendario:: Borrar(const TCalendario &);
+//bool TListaCalendario:: Borrar(const TCalendario &);
 // Borra el elemento que ocupa la posición indicada
 //bool Borrar (TListaPos &);
 //Borra todos los Calendarios con fecha ANTERIOR a la pasada.
-bool TListaCalendario:: Borrar(int,int,int);
+//bool TListaCalendario:: Borrar(int,int,int);
 // Devuelve true si la lista está vacía, false en caso contrario
-bool TListaCalendario:: EsVacia();
+bool TListaCalendario:: EsVacia() const
+{
+	return primero == NULL;
+}
 // Obtiene el elemento que ocupa la posición indicada
-//TCalendario Obtener(TListaPos &)
+TCalendario TListaCalendario:: Obtener(const TListaPos &tlp)
+{
+	return tlp.pos->c;
+}
 // Devuelve true si el Calendario está en la lista.
-bool TListaCalendario:: Buscar(TCalendario &);
+//bool TListaCalendario:: Buscar(TCalendario &);
 // Devuelve la longitud de la lista
-int TListaCalenadio:: Longitud();
+//int TListaCalenadio:: Longitud();
 // Devuelve la primera posición en la lista
-//TListaPos Primera();
+TListaPos TListaCalendario:: Primera() const
+{
+	TListaPos aux;
+	
+	if(!this->EsVacia())
+		aux.pos = primero;
+	
+	return aux;
+	
+}
 // Devuelve la última posición en la lista
-//TListaPos Ultima();
+TListaPos TListaCalendario:: Ultima() const
+{
+	TListaPos aux;
+	return aux;
+}
 // Suma de dos sublistas en una nueva lista
-TListaCalendario TListaCalendario:: SumarSubl (int I_L1, int F_L1, TListaCalendario & L2, int I_L2, int F_L2);
+//TListaCalendario TListaCalendario:: SumarSubl (int I_L1, int F_L1, TListaCalendario & L2, int I_L2, int F_L2);
 // Extraer un rango de nodos de la lista
-TListaCalendario TListaCalendario:: ExtraerRango (int n1, int n2);
+//TListaCalendario TListaCalendario:: ExtraerRango (int n1, int n2);
 //Sobrecarga del operador salida
-friend ostream & operator<<(ostream &, TListaCalendario &);
+//friend ostream & operator<<(ostream &, TListaCalendario &);
 
-*/
+

@@ -90,6 +90,7 @@ bool TVectorCalendario::operator==(const TVectorCalendario &TV)
 	}
 
 	return iguales;
+	
 }
 // Sobrecarga del operador desigualdad
 bool TVectorCalendario::operator!=(const TVectorCalendario &TV)
@@ -102,7 +103,7 @@ TCalendario & TVectorCalendario::operator[](int n)
 {
 	TCalendario *dato = NULL;
 
-	if(n>0 && n<=tamano)
+	if(n>=1 && n<=tamano)
 	{
 		dato = &c[n-1];
 	}
@@ -117,7 +118,7 @@ TCalendario & TVectorCalendario::operator[](int n)
 // Sobrecarga del operador corchete (parte DERECHA)
 TCalendario TVectorCalendario::operator[](int indice) const
 {
-	if(indice>0 && indice<=tamano)
+	if(indice>=1 && indice<=tamano)
 	{
 		return c[indice-1];
 	}
@@ -126,6 +127,7 @@ TCalendario TVectorCalendario::operator[](int indice) const
 		return error;
 	}
 }
+
 // Tamaño del vector (posiciones TOTALES)
 int TVectorCalendario::Tamano(){return this->tamano;}
 
@@ -162,80 +164,73 @@ bool TVectorCalendario::ExisteCal(TCalendario &TC)
 void TVectorCalendario::MostrarMensajes(int dia,int mes,int anyo)
 {
 	TCalendario t(dia,mes,anyo,"");
+	
+	TVectorCalendario aux(tamano);
+	
+	int iterador=0;
+	
 	for(int i=0;i<tamano;i++)
 	{
 		if(t<c[i] || t==c[i])
-			cout << c[i].Mensaje() <<endl;
-
+		{
+			iterador++;
+			aux[iterador] = c[i] ;
+		}
 	}
-
-
+	
+	aux.Redimensionar(iterador);
+	cout << aux <<endl;
 }
-		
+
 // REDIMENSIONAR el vectorde TCalendario
 bool TVectorCalendario::Redimensionar(int nTam)
 {
-	if(nTam<=0 || nTam == this->tamano) // IGUAL TAMAÑO
-		return false;
-	if(nTam>0 && nTam<this->tamano) // MENOR QUe EL ORIGINAL
+	bool ok =  false;
+	
+	if(nTam != tamano && nTam>0)
 	{
-		
 		TVectorCalendario aux(nTam);
-
-		// COPIAMOS A AUXILIAR
-		for(int i=0;i<nTam;i++)
+		if(nTam > tamano) // copiar y nuevas vacias
 		{
-			aux[i] = c[i];
+			for(int i=0;i<aux.tamano;i++)
+			{
+				if(i<tamano)
+				{
+					aux.c[i] =  c[i];
+				}
+				else
+				{
+					TCalendario tcal;
+					aux.c[i] = tcal;
+				}		
+			}
 		}
-		// BORRAMOS
-		delete[] this->c;
-
-		// CREAMOS DE NUEVO
-		this->c = new TCalendario[nTam];
-
-		*this=aux;
-		(aux).~TVectorCalendario();	
-
-	}
-	if(nTam>0 && nTam>this->tamano) // MAYOR QUE EL TAMANO ORIGINAL
-	{
-		// AUXILIAR
-		TVectorCalendario aux(nTam);
-
-		// COPIAMOS A AUXILIAR
-		for(int i=0;i<nTam;i++)
+		else // Se eliminan elementos por la derecha
 		{
-			aux[i] = c[i];
+			for(int i=0;i<nTam;i++)
+			{
+				aux.c[i] = c[i];
+			}
 		}
-		// BORRAMOS
-		delete[] this->c;
 
-		// CREAMOS DE NUEVO
-		this->c = new TCalendario[nTam];
-
-		for(int i=0;i<nTam;i++)
-		{
-			if(i>tamano)
-				c[i] = TCalendario(); 
-			else
-				c[i] = aux[i];
-		}
+		*this =  aux;
 		
-		*this=aux;
-		(aux).~TVectorCalendario();	
+		ok =  true;
 	}
-	return true;
+	
+	return ok;
 }
 
 ostream & operator<<(ostream &s, TVectorCalendario &TV)
 {
 	s <<"[";
-	for(int i=1;i<=TV.Ocupadas();i++)
+	for(int i=1;i<=TV.Tamano();i++)
 	{
-		s << "(" << i << ") " << TV[i-1];
+		s << "(" << i << ") " << TV[i];
 
-		if(i<TV.Ocupadas())
+		if(i<TV.Tamano())
 			s<< ", ";
+			
 	}
 
 	s <<"]";

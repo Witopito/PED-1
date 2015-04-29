@@ -10,10 +10,13 @@
 
 #include "tcalendario.h"
 #include "tnodocalendario.h"
+
 using namespace std;
 
 class TListaPos
 {
+	friend class TNodoCalendario;
+	friend class TListaCalendario;
 	private:
 		// Para implementar la POSICIÓN a NODO de la LISTA de TCalendario
 		TNodoCalendario *pos;
@@ -35,7 +38,7 @@ class TListaPos
 		// Posición vacía
 		bool EsVacia();
 		
-		friend class TNodoCalendario;
+		
 
 };
 #endif
