@@ -9,9 +9,9 @@
 #define TLISTACALENDARIO_H_
 
 #include "tcalendario.h"
-#include "tnodocalendario.h"
-#include "tlistapos.h"
 using namespace std;
+class TNodoCalendario;
+class TListaPos;
 
 class TListaCalendario 
 {
@@ -62,9 +62,55 @@ class TListaCalendario
 	//Sobrecarga del operador salida
 	friend ostream & operator<<(ostream &, TListaCalendario &);
 	
+};
+
+class TNodoCalendario
+{
+	friend class TListaCalendario; 
+	friend class TListaPos;
+  private:
+	TCalendario c; // Uso de LAYERING sobre la clase
+	TNodoCalendario *siguiente;
+
+  public:
+	// Constructor por defecto
+	TNodoCalendario ();
+	// Constructor de copia
+	TNodoCalendario (const TNodoCalendario &);
+	// Destructor
+	~ TNodoCalendario ();
+	// Sobrecarga del operador asignación
+	TNodoCalendario & operator=(const TNodoCalendario &);
 	
 
+};
 
+class TListaPos
+{
+	friend class TNodoCalendario;
+	friend class TListaCalendario;
+	private:
+		// Para implementar la POSICIÓN a NODO de la LISTA de TCalendario
+		TNodoCalendario *pos;
+	public:
+		// Constructor por defecto
+		TListaPos();
+		// Constructor de copia
+		TListaPos(const TListaPos &);
+		// Destructor
+		~TListaPos();
+		// Sobrecarga del operador asignación
+		TListaPos & operator=(const TListaPos &);
+		// Sobrecarga del operador igualdad
+		bool operator==(const TListaPos &);
+		// Sobrecarga del operador desigualdad
+		bool operator!=(const TListaPos &);
+		// Devuelve la posición siguiente
+		TListaPos Siguiente();
+		// Posición vacía
+		bool EsVacia();
+		
+		
 
 };
 #endif
