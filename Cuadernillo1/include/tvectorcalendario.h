@@ -9,6 +9,10 @@
 #define TVECTORCALENDARIO_H_
 
 #include "tcalendario.h"
+#include <string.h>
+#include <iomanip>
+#include <sstream>
+
 using namespace std;
 class TVectorCalendario {
 	private:
@@ -36,9 +40,9 @@ class TVectorCalendario {
 		// Sobrecarga del operador corchete (parte DERECHA)
 		TCalendario operator[](int) const;
 		// Tamaño del vector (posiciones TOTALES)
-		int Tamano();
+		int Tamano() const;
 		// Cantidad de posiciones OCUPADAS (no vacías) en el vector
-		int Ocupadas();
+		int Ocupadas() ;
 		// Devuelve true si existe el calendario en el vector
 		bool ExisteCal(TCalendario &);
 		// Mostrar por pantalla mensajes de TCalendario en el vector, de fecha IGUAL O POSTERIOR a la pasada
@@ -47,7 +51,7 @@ class TVectorCalendario {
 		bool Redimensionar(int);
 
 		// Sobrecarga del operador salida
-		friend ostream & operator<<(ostream &, TVectorCalendario &);
+		friend ostream & operator<<(ostream &,const TVectorCalendario &);
 
 
 };

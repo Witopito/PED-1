@@ -129,7 +129,7 @@ TCalendario TVectorCalendario::operator[](int indice) const
 }
 
 // Tamaño del vector (posiciones TOTALES)
-int TVectorCalendario::Tamano(){return this->tamano;}
+int TVectorCalendario::Tamano() const {return this->tamano;}
 
 // Cantidad de posiciones OCUPADAS (no vacías) en el vector
 int TVectorCalendario::Ocupadas()
@@ -221,7 +221,7 @@ bool TVectorCalendario::Redimensionar(int nTam)
 	return ok;
 }
 
-ostream & operator<<(ostream &s, TVectorCalendario &TV)
+ostream & operator<<(ostream &s,const TVectorCalendario &TV)
 {
 	s <<"[";
 	for(int i=1;i<=TV.Tamano();i++)

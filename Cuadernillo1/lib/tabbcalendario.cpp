@@ -71,19 +71,52 @@ void TABBCalendario:: Enraizar(TABBCalendario &iz, TCalendario c,TABBCalendario 
 	iz.raiz = de.raiz = NULL;
 	this-> ~TABBCalendario();
 	raiz = aux;
-	
-	
 }
 // Inserta el elemento en el árbol
 bool TABBCalendario:: Insertar(TCalendario &t)
 {
-	// LLAMAR A LA FUNCION BUSCAR PARA COMPROBAR QUE ESTE EN EL ARBOL
-	return true;
+	if(this->Buscar(t)) // COMPROBAMOS SI EXISTE O NO
+		return false;
+	else
+	{
+		this->InsertarAux(t);
+		return true;
+	}
+}
+
+bool TABBCalendario:: InsertarAux(TCalendario &t)
+{
+	
+	if(raiz==NULL)
+	{
+		TNodoABB *aux = new TNodoABB();
+		aux->item = t;
+		raiz = aux;
+		
+		return true;
+	}
+    else if(t < raiz->item)
+		(raiz->iz).InsertarAux(t);
+    else if(t > raiz->item)
+		(raiz->de).InsertarAux(t);
+	else
+		return false;
 }
 // Borra el elemento en el árbol
 //bool Borrar(TCalendario &);
 // Devuelve TRUE si el elemento está en el árbol, FALSE en caso contrario
-//bool Buscar(TCalendario &);
+bool TABBCalendario::Buscar(TCalendario &c)
+{
+	if(raiz==NULL)
+		return false;
+	else if(c<raiz->item)
+		return (raiz->iz).Buscar(c);
+	else if(c>raiz->item)
+		return (raiz->de).Buscar(c);
+	else
+		return true;
+	
+}
 // Devuelve el elemento en la raíz del árbol
 TCalendario TABBCalendario:: Raiz()
 {
@@ -107,19 +140,100 @@ int TABBCalendario:: Altura()
 		return 0;
 }
 // Devuelve el número de nodos del árbol (un árbol vacío posee 0 nodos)
-//int Nodos();
+int TABBCalendario:: Nodos() const
+{
+	if(raiz!=NULL)
+	{
+		return (1 + (raiz->iz).Nodos() + (raiz->de).Nodos());
+	}
+	else
+		return 0;
+}
 // Devuelve el número de nodos hoja en el árbol (la raíz puede ser nodo hoja)
 //int NodosHoja();
+
+// Devuelve el recorrido en inorden
+TVectorCalendario TABBCalendario::Inorden() const
+{
+	int posicion = 1;
+	
+	// Vector del tamaño adecuado para almacenar todos los nodos
+	TVectorCalendario v(Nodos());
+	InordenAux(v, posicion);
+
+	return v;
+}
 // Devuelve el recorrido en inorden sobre un vector
-//TVectorCalendario Inorden();
+void TABBCalendario:: InordenAux( TVectorCalendario& v,int& posicion) const
+{
+	if(raiz != NULL)
+	{
+		(raiz->iz).InordenAux(v,posicion);
+		v[posicion] = raiz->item;
+		posicion++;
+		(raiz->de).InordenAux(v,posicion);
+		
+	}
+}
 // Devuelve el recorrido en preorden sobre un vector
-//TVectorCalendario Preorden();
+TVectorCalendario TABBCalendario:: Preorden()
+{
+	int posicion = 1;
+	
+	// Vector del tamaño adecuado para almacenar todos los nodos
+	TVectorCalendario v(Nodos());
+	PreordenAux(v, posicion);
+	return v;
+}
+
+void TABBCalendario:: PreordenAux(TVectorCalendario& v,int& posicion) const
+{
+	if(raiz != NULL)
+	{
+		int nuevaPos = posicion;
+		v[posicion] = raiz->item;
+		posicion++;
+		(raiz->iz).PreordenAux(v,posicion);
+		(raiz->de).PreordenAux(v,posicion);
+		
+	}
+}
 // Devuelve el recorrido en postorden sobre un vector
-//TVectorCalendario Postorden();
+TVectorCalendario TABBCalendario:: Postorden()
+{
+	int posicion = 1;
+	
+	// Vector del tamaño adecuado para almacenar todos los nodos
+	TVectorCalendario v(Nodos());
+	PostordenAux(v, posicion);
+	return v;
+}
+
+void TABBCalendario:: PostordenAux(TVectorCalendario& v,int& posicion)const
+{
+	if(raiz != NULL)
+	{
+		int nuevaPos = posicion;
+		(raiz->iz).PostordenAux(v,posicion);
+		(raiz->de).PostordenAux(v,posicion);
+		v[posicion] = raiz->item;
+		
+		posicion++;
+	}
+}
 // Devuelve el recorrido en niveles
 //TVectorCalendario Niveles();
 // Sobrecarga del operador salida
-//friend ostream & operator<<(ostream &, TABBCalendario &);
+ostream & operator<<(ostream &s,TABBCalendario & tabb)
+{
+	/*TVectorCalendario v(tabb.Nodos());
+	v = tabb.Inorden();
+	s << v;
+	return s;*/
+	return s;
+}
+
+
 // Suma de dos ABB
 //TABBCalendario operator+( TABBCalendario &);
 // Resta de dos ABB

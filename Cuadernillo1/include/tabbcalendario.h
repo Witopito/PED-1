@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <sstream>
 #include <iomanip>
 #include "tcalendario.h"
 #include "tvectorcalendario.h"
@@ -25,15 +26,17 @@ class TABBCalendario {
 		// Puntero al nodo raíz
 		TNodoABB *raiz;
 		// Devuelve el recorrido en inorden
-		void InordenAux(TVectorCalendario &, int &);
+		void InordenAux(TVectorCalendario &,int &) const;
 		// Devuelve el recorrido en preorden
-		void PreordenAux(TVectorCalendario &, int &);
+		void PreordenAux(TVectorCalendario &,int &) const;
 		// Devuelve el recorrido en postorden
-		void PostordenAux(TVectorCalendario &, int &);
+		void PostordenAux(TVectorCalendario &,int &) const;
 		// Metodo auxiliar para la copia
 		void Copiar(const TABBCalendario &);
+		
 		void Enraizar(TABBCalendario &, TCalendario c,TABBCalendario &);
-
+		
+		bool InsertarAux(TCalendario &);
 
 	public:
 		// Constructor por defecto
@@ -59,25 +62,23 @@ class TABBCalendario {
 		// Devuelve la altura del árbol (la altura de un árbol vacío es 0)
 		int Altura();
 		// Devuelve el número de nodos del árbol (un árbol vacío posee 0 nodos)
-		int Nodos();
+		int Nodos() const;
 		// Devuelve el número de nodos hoja en el árbol (la raíz puede ser nodo hoja)
 		int NodosHoja();
 		// Devuelve el recorrido en inorden sobre un vector
-		TVectorCalendario Inorden();
+		TVectorCalendario Inorden() const ;
 		// Devuelve el recorrido en preorden sobre un vector
-		TVectorCalendario Preorden();
+		TVectorCalendario Preorden() ;
 		// Devuelve el recorrido en postorden sobre un vector
 		TVectorCalendario Postorden();
 		// Devuelve el recorrido en niveles
 		TVectorCalendario Niveles();
 		// Sobrecarga del operador salida
-		friend ostream & operator<<(ostream &, TABBCalendario &);
+		friend ostream & operator<<(ostream &,const TABBCalendario &);
 		// Suma de dos ABB
 		TABBCalendario operator+( TABBCalendario &);
 		// Resta de dos ABB
 		TABBCalendario operator-( TABBCalendario &);
-
-		
 
 };
 
