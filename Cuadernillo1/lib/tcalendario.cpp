@@ -520,9 +520,9 @@ ostream&  operator<<(ostream &s,const TCalendario &obj)
 	s << obj.anyo;
 
 	if(obj.mensaje==NULL)
-		s << " " << "";
+		s << " " << "\"\"";
 	else
-		s << " " << obj.mensaje;
+		s << " " << "\""<< obj.mensaje << "\"";
 
 	return s;
 }

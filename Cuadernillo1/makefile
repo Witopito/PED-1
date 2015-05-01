@@ -9,7 +9,7 @@ _OBJ= tcalendario.o tvectorcalendario.o tlistacalendario.o tabbcalendario.o
 OBJ = $(patsubst %,$(LIBDIR)/%,$(_OBJ))
 
 tad:    ../TADS/TListaCalendario/tad16.cpp $(OBJ)
-	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) ../TADS/TABBCalendario/tad01.cpp  $(OBJ) -o tad
+	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) ../TADS/TABBCalendario/tad10.cpp  $(OBJ) -o tad
 
 $(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.h
 	$(CC) $(OPTIONS) $(DEBUG) -c -I$(INCLUDEDIR) -o $@ $<

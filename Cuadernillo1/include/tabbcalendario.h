@@ -12,6 +12,7 @@
 #include <string.h>
 #include <sstream>
 #include <iomanip>
+#include <queue>  
 #include "tcalendario.h"
 #include "tvectorcalendario.h"
 
@@ -37,6 +38,7 @@ class TABBCalendario {
 		void Enraizar(TABBCalendario &, TCalendario c,TABBCalendario &);
 		
 		bool InsertarAux(TCalendario &);
+		TNodoABB Maximo();
 
 	public:
 		// Constructor por defecto
@@ -60,17 +62,17 @@ class TABBCalendario {
 		// Devuelve el elemento en la raíz del árbol
 		TCalendario Raiz();
 		// Devuelve la altura del árbol (la altura de un árbol vacío es 0)
-		int Altura();
+		int Altura() const;
 		// Devuelve el número de nodos del árbol (un árbol vacío posee 0 nodos)
 		int Nodos() const;
 		// Devuelve el número de nodos hoja en el árbol (la raíz puede ser nodo hoja)
-		int NodosHoja();
+		int NodosHoja() const;
 		// Devuelve el recorrido en inorden sobre un vector
 		TVectorCalendario Inorden() const ;
 		// Devuelve el recorrido en preorden sobre un vector
-		TVectorCalendario Preorden() ;
+		TVectorCalendario Preorden() const ;
 		// Devuelve el recorrido en postorden sobre un vector
-		TVectorCalendario Postorden();
+		TVectorCalendario Postorden() const;
 		// Devuelve el recorrido en niveles
 		TVectorCalendario Niveles();
 		// Sobrecarga del operador salida
@@ -93,7 +95,7 @@ class TNodoABB {
 		//Constructor por defecto
 		TNodoABB ();
 		//Constructor copia
-		TNodoABB (TNodoABB &);
+		TNodoABB (const TNodoABB &);
 		//Destructor
 		~TNodoABB ();
 		// Sobrecarga del operador asignación
