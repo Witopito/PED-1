@@ -8,7 +8,6 @@
 
 #include "tavlcalendario.h"
 
-
 // Constructor por defecto
 TAVLCalendario::TAVLCalendario ()
 {
@@ -74,6 +73,53 @@ bool TAVLCalendario:: EsVacio()
 	return (raiz==NULL);
 }
 
+void TAVLCalendario::rotacionII(TAVLCalendario &tavl)
+{
+	TNodoAVL *aux = new TNodoAVL();
+	
+	aux = tavl.raiz;
+		
+	tavl.raiz = aux->raiz;
+	tavl.raiz->de = aux;
+	tavl.raiz->iz = aux->iz->iz;
+	tavl.raiz->de->iz = aux->iz->de;
+}
+
+void TAVLCalendario::rotacionDD(TAVLCalendario &tavl)
+{
+	TNodoAVL *aux = new TNodoAVL();
+	
+	aux = tavl.raiz;
+	tavl.raiz->de = aux->de->de;
+	tavl.raiz = aux->de;
+	tavl.raiz->iz = aux;
+	tavl.raiz->iz->de = aux->de->iz;
+}
+
+
+void TAVLCalendario::rotacionID(TAVLCalendario &tavl)
+{
+	TNodoAVL *aux = new TNodoAVL();
+	
+	aux = tavl.raiz;
+	tavl.raiz = aux->iz->de;
+	tavl.raiz->de = aux;
+	tavl.raiz->de->iz = aux->iz->de->de;
+	tavl.raiz->iz->de = aux->iz->de->iz;
+	
+}
+
+void TAVLCalendario::rotacionDI(TAVLCalendario &tavl)
+{
+	TNodoAVL *aux = new TNodoAVL();
+	
+	aux = tavl.raiz;
+	
+	tavl.raiz->iz = aux;
+	tavl.raiz->iz->de = aux->de->iz->iz;
+	tavl.raiz->de->iz = aux->de->iz->de;
+	tavl.raiz = aux->de->iz;
+}
 /*
 // Inserta el elemento en el árbol
 bool TAVLCalendario:: Insertar(TCalendario &t)
