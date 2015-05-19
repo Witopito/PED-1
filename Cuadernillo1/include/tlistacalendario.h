@@ -40,15 +40,15 @@ class TListaCalendario
 	// Busca y borra el elemento
 	bool Borrar(const TCalendario &);
 	// Borra el elemento que ocupa la posición indicada
-	//bool Borrar (TListaPos &);
+	bool Borrar (const TListaPos &);
 	//Borra todos los Calendarios con fecha ANTERIOR a la pasada.
 	bool Borrar(int,int,int);
 	// Devuelve true si la lista está vacía, false en caso contrario
 	bool EsVacia() const;
 	// Obtiene el elemento que ocupa la posición indicada
-	TCalendario Obtener(const TListaPos &);
+	TCalendario Obtener(const TListaPos &) const;
 	// Devuelve true si el Calendario está en la lista.
-	bool Buscar(TCalendario &);
+	bool Buscar(const TCalendario &);
 	// Devuelve la longitud de la lista
 	int Longitud();
 	// Devuelve la primera posición en la lista
@@ -60,7 +60,7 @@ class TListaCalendario
 	// Extraer un rango de nodos de la lista
 	TListaCalendario ExtraerRango (int n1, int n2);
 	//Sobrecarga del operador salida
-	friend ostream & operator<<(ostream &, TListaCalendario &);
+	friend ostream & operator<<(ostream &, const TListaCalendario &);
 	
 };
 
@@ -106,9 +106,9 @@ class TListaPos
 		// Sobrecarga del operador desigualdad
 		bool operator!=(const TListaPos &);
 		// Devuelve la posición siguiente
-		TListaPos Siguiente();
+		TListaPos Siguiente() const;
 		// Posición vacía
-		bool EsVacia();
+		bool EsVacia() const;
 		
 		
 

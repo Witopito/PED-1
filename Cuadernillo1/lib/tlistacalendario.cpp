@@ -98,42 +98,128 @@ bool TListaCalendario:: Insertar(const TCalendario &calendario)
 	//tcal = &primero->c;
 	
 	bool insertado = false; // NO EXISTE EL ELEMENTO
-	
-	TListaPos tPos,tAnt;
-	
-	tPos = this->Primera(); // INTRODUCIMOS PRIMER NODO	
-
-	if(tPos.pos->c == calendario)
+		
+	if(this->Primera().EsVacia()) // INSERTAMOS EL PRIMER NODO EN LA LISTA
+	{
+		TNodoCalendario *tn = new TNodoCalendario();
+		tn->c = calendario;
+		tn->siguiente = NULL;
+		
+		this->primero = tn;
+		
 		return true;
-	
-	while(tPos.EsVacia() && !insertado)
-	{		
-		if(Obtener(tPos) > calendario && !(Obtener(tPos) == calendario))
-		{
-			
-			TNodoCalendario *tn = new TNodoCalendario();
-			
-			tn->c = calendario; 
-			
-			tn->siguiente = tPos.Siguiente().pos; // NUEVO APUNTA A SIGUIENTE
-			
-			tAnt.pos = tn; 			// ANTERIOR APUNTA A NUEVO
-			
-			insertado = true;
-		}
-		else
-		{
-			tAnt = tPos;
-			tPos = tPos.Siguiente();
+
+	}
+	else if(this->Buscar(calendario)) // SI EXISTE EL CALENDARIO  NO LO INSERTAMOS
+		return false;
+	else
+	{	
+		TListaPos tPos,tAnt;
+		
+		tPos = this->Primera(); // INTRODUCIMOS PRIMER NODO	
+		
+		while(!tPos.EsVacia())
+		{	
+			if(Obtener(tPos) > calendario) // SI EL CALENDARIO ES MAYOR INSERTAMOS
+			{
+				TNodoCalendario * aux = new TNodoCalendario();
+				
+				aux->siguiente = tPos.pos; // APUNTAMOS EN NUEVO AL SIGUIENTE
+				aux->c = calendario;	// COPIAMOS EL DATO
+				tAnt.pos->siguiente = aux; // APUNTAMOS ANTERIOR AL NUEVO
+				
+				return true;
+			}
+			else if(tPos.Siguiente().EsVacia()) // CUANDO LLEGA AL FINAL
+			{
+				TNodoCalendario * aux = new TNodoCalendario();
+				aux->siguiente = NULL;
+				aux->c = calendario;
+				tPos.pos->siguiente = aux;
+				return true;
+			}
+			else // SEGUIMOS RECORRIENDO
+			{
+				tAnt = tPos;
+				tPos = tPos.Siguiente();
+			}
 		}
 	}
-	
-	return insertado;
+		
+	return false;
 }
+
 // Busca y borra el elemento
-//bool TListaCalendario:: Borrar(const TCalendario &);
+bool TListaCalendario:: Borrar(const TCalendario &calendario)
+{
+	TListaPos tPos,tAnt;
+	tPos = this->Primera();
+	tAnt = this->Primera();
+	
+	while(!tPos.EsVacia())
+	{
+		if(Obtener(tPos) == calendario)
+		{
+			if(tPos.Siguiente().EsVacia()) // ULTIMA POSICION
+			{
+				tAnt.pos->siguiente = NULL;
+				
+				return true;
+			}
+			else if(tPos == Primera()) // PRIMERA POSICION
+			{
+				cout << "entra" <<endl;
+				this->primero = tPos.Siguiente().pos;
+				return true;
+			}
+			else
+			{
+				tAnt.pos->siguiente = tPos.pos->siguiente;
+				
+				return true;
+			}  
+		}
+		
+		tAnt = tPos;
+		tPos = tPos.Siguiente(); 
+	}
+	
+	return false;
+}
+
 // Borra el elemento que ocupa la posición indicada
-//bool Borrar (TListaPos &);
+bool TListaCalendario:: Borrar (const TListaPos &tListaPos)
+{
+	TListaPos tPos,tAnt;
+	tPos = this->Primera();
+	tAnt = this->Primera();
+	
+	while(!tPos.EsVacia())
+	{
+		if(tPos == tListaPos)
+		{
+			if(tPos.Siguiente().EsVacia()) // ULTIMA POSICION
+			{
+				tAnt.pos->siguiente = NULL;
+				
+				
+				return true;
+			}
+			else
+			{
+				tAnt.pos->siguiente = tPos.pos->siguiente;
+
+				
+				return true;
+			}  
+		}
+		
+		tAnt = tPos;
+		tPos = tPos.Siguiente(); 
+	}
+	
+	return false;
+}
 //Borra todos los Calendarios con fecha ANTERIOR a la pasada.
 //bool TListaCalendario:: Borrar(int,int,int);
 // Devuelve true si la lista está vacía, false en caso contrario
@@ -142,12 +228,25 @@ bool TListaCalendario:: EsVacia() const
 	return primero == NULL;
 }
 // Obtiene el elemento que ocupa la posición indicada
-TCalendario TListaCalendario:: Obtener(const TListaPos &tlp)
+TCalendario TListaCalendario:: Obtener(const TListaPos &tlp) const
 {
 	return tlp.pos->c;
 }
 // Devuelve true si el Calendario está en la lista.
-//bool TListaCalendario:: Buscar(TCalendario &);
+bool TListaCalendario:: Buscar(const TCalendario &t)
+{
+	TListaPos tPos = this->Primera();
+	
+	while(!tPos.EsVacia())
+	{
+		if(tPos.pos->c==t)
+			return true;
+			
+		tPos = tPos.Siguiente();
+	}
+	
+	return false;
+}
 // Devuelve la longitud de la lista
 //int TListaCalenadio:: Longitud();
 // Devuelve la primera posición en la lista
@@ -172,7 +271,27 @@ TListaPos TListaCalendario:: Ultima() const
 // Extraer un rango de nodos de la lista
 //TListaCalendario TListaCalendario:: ExtraerRango (int n1, int n2);
 //Sobrecarga del operador salida
-//friend ostream & operator<<(ostream &, TListaCalendario &);
+ostream & operator<<(ostream &os, const TListaCalendario &tLista)
+{
+	TListaPos tPos;
+	
+	tPos = tLista.Primera();
+	os << '<';
+	while(!tPos.EsVacia())
+	{
+		os << tLista.Obtener(tPos);
+		
+		if(!tPos.Siguiente().EsVacia())
+			os << " ";
+			
+		tPos = tPos.Siguiente();
+	}
+	
+
+
+	os << '>';
+	return os;
+}
 
 
 /////////////////////////////// TNODOCALENDARIO  //////////////////////////////////////////
@@ -270,14 +389,14 @@ bool TListaPos::operator!=(const TListaPos &tlp)
 	return !(tlp.pos==this->pos);
 }
 // Devuelve la posición siguiente
-TListaPos TListaPos::Siguiente()
+TListaPos TListaPos::Siguiente() const
 {
 	TListaPos aux;
 	aux.pos = this->pos->siguiente;
 	return aux;
 }
 // Posición vacía
-bool TListaPos::EsVacia()
+bool TListaPos::EsVacia() const
 {
 	if(pos==NULL)
 		return true;

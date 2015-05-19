@@ -42,13 +42,13 @@ TCalendario::TCalendario(int dia, int mes, int anyo, char *mens)
 		this->dia = dia;
 		this->mes = mes;
 		this->anyo = anyo;
+		this->mensaje = NULL;
+		
 		if(mens!=NULL)
 		{
 			this->mensaje =  new char[strlen(mens)+1];
 			strcpy(this->mensaje,mens);
 		}
-		else
-			this->mensaje = NULL;
 	}
 }
 
@@ -241,15 +241,15 @@ TCalendario TCalendario:: operator++(int t)
 {
 	TCalendario tC(*this); // OBJETO TEMPORAL
 
-	*this = tC + 1;
+	*this = *this + 1;
 	return tC;
 }
 
 // Modifica la fecha incrementandola en un dia (con preincremento);
 TCalendario& TCalendario:: operator++(void)
 {
-	*this + 1;
-	return *this;
+	*this  = *this + 1;
+	return (*this);
 }
 
 
@@ -258,15 +258,16 @@ TCalendario TCalendario:: operator--(const int t)
 {
 	TCalendario tC(*this); // OBJETO TEMPORAL
 
-	*this = (*this) - 1;return tC;
+	*this = (*this) - 1;
+	return tC;
 }
 
 
 // Modifica la fecha decrementándola en un día (con predecremento);
 TCalendario& TCalendario:: operator--(void)
 {
-	*this - 1;
-	return *this;
+	*this = *this - 1;
+	return (*this);
 }
 
 // Modifica la fecha
@@ -305,7 +306,7 @@ bool TCalendario::ModMensaje(char *mens)
 }
 
 
-bool TCalendario::compara(const TCalendario &t)
+bool TCalendario::compara(const TCalendario &t) const
 {
 	bool ok = false;
 
@@ -364,9 +365,9 @@ bool TCalendario:: esMayor(const TCalendario &t)
 
 	if(anyo>t.anyo)
 		mayor = true;
-	else if(mes>t.mes)
+	else if(anyo == t.anyo && mes>t.mes)
 		mayor = true;
-	else if(dia>t.dia)
+	else if(anyo == t.anyo && mes == t.mes && dia>t.dia)
 		mayor = true;
 
 	return mayor;
@@ -415,10 +416,6 @@ bool TCalendario:: operator>(const TCalendario &t2)
 				mayor = true;
 			}
 		}
-		else if(mensaje==NULL && t2.mensaje==NULL)
-		{
-			mayor = false;
-		}
 		else if((mensaje==NULL || t2.mensaje == NULL) && !(mensaje==NULL && t2.mensaje == NULL)) // SI UNO DE LOS 2 SON NULL
 		{
 			if(mensaje==NULL && t2.mensaje!=NULL)
@@ -458,10 +455,6 @@ bool TCalendario:: operator<(const TCalendario &t2)
 			{
 				menor = true;
 			}
-		}
-		else if(mensaje==NULL && t2.mensaje==NULL)
-		{
-			menor = false;
 		}
 		else if((mensaje==NULL || t2.mensaje == NULL) && !(mensaje==NULL && t2.mensaje == NULL)) // SI UNO DE LOS 2 SON NULL
 		{

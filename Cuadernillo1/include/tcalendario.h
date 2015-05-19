@@ -11,9 +11,9 @@
 #include <iostream>
 #include <string.h>
 #include <iomanip>
+
 using namespace std;
 class TCalendario {
-
 
 	private:
 		int dia;
@@ -21,7 +21,7 @@ class TCalendario {
 		int anyo;
 		char* mensaje;
 		int compruebaFecha(int mes, int anyo);
-		bool compara(const TCalendario &t);
+		bool compara(const TCalendario &t) const;
 		bool esMayor(const TCalendario &t);
 		bool esMayorCadena(const TCalendario &t2);
 
