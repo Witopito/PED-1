@@ -79,7 +79,8 @@ void TAVLCalendario::rotacionII(TAVLCalendario &tavl)
 	
 	aux = tavl.raiz;
 		
-	tavl.raiz = aux->raiz;
+	tavl.raiz = aux;
+	
 	tavl.raiz->de = aux;
 	tavl.raiz->iz = aux->iz->iz;
 	tavl.raiz->de->iz = aux->iz->de;
@@ -90,6 +91,7 @@ void TAVLCalendario::rotacionDD(TAVLCalendario &tavl)
 	TNodoAVL *aux = new TNodoAVL();
 	
 	aux = tavl.raiz;
+	
 	tavl.raiz->de = aux->de->de;
 	tavl.raiz = aux->de;
 	tavl.raiz->iz = aux;
@@ -102,6 +104,7 @@ void TAVLCalendario::rotacionID(TAVLCalendario &tavl)
 	TNodoAVL *aux = new TNodoAVL();
 	
 	aux = tavl.raiz;
+	
 	tavl.raiz = aux->iz->de;
 	tavl.raiz->de = aux;
 	tavl.raiz->de->iz = aux->iz->de->de;
@@ -115,18 +118,19 @@ void TAVLCalendario::rotacionDI(TAVLCalendario &tavl)
 	
 	aux = tavl.raiz;
 	
-	tavl.raiz->iz = aux;
-	tavl.raiz->iz->de = aux->de->iz->iz;
-	tavl.raiz->de->iz = aux->de->iz->de;
+	raiz->iz = aux;
+	raiz->iz->de = aux->de->iz->iz;
+	raiz->de->iz = aux->de->iz->de;
 	tavl.raiz = aux->de->iz;
 }
-/*
+
+
 // Inserta el elemento en el árbol
 bool TAVLCalendario:: Insertar(TCalendario &t)
 {
 	if(this->Buscar(t)) // COMPROBAMOS SI EXISTE O NO
 	{
-		cout << cerr << "ERROR: El elemento ya existe"  <<endl;
+		//cout << cerr << "ERROR: El elemento ya existe"  <<endl;
 		return false;
 	}
 	else
@@ -141,10 +145,10 @@ bool TAVLCalendario:: InsertarAux(TCalendario &t)
 	
 	if(raiz==NULL)
 	{
-		TNodoABB *aux = new TNodoABB();
+		TNodoAVL *aux = new TNodoAVL();
 		aux->item = t;
 		raiz = aux;
-		
+		// equilibrado
 		return true;
 	}
     else if(t < raiz->item)
@@ -153,7 +157,9 @@ bool TAVLCalendario:: InsertarAux(TCalendario &t)
 		(raiz->de).InsertarAux(t);
 	else
 		return false;
-}*/
+}
+
+void TAVLCalendario ::
 /*
 // Borra el elemento en el árbol
 bool TACalendario:: Borrar(TCalendario &t)

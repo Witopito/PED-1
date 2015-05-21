@@ -34,6 +34,11 @@ class TAVLCalendario {
 		void PostordenAux(const TVectorCalendario &, int &)const;
 		
 		void Copiar(const TAVLCalendario &);
+		
+		void rotacionDD(TAVLCalendario &tavl);
+		void rotacionID(TAVLCalendario &tavl);
+		void rotacionDI(TAVLCalendario &tavl);
+		void rotacionII(TAVLCalendario &tavl);
 
 	public:
 		// Constructor por defecto
