@@ -38,14 +38,6 @@ cout <<  lista.Insertar(a) << endl;
  cout <<  lista.Insertar(e) << endl;
 
 cout << lista <<endl;
-
- cout <<  lista.Borrar(c) << endl;
- cout << lista.Borrar(g) << endl;
- cout <<  lista.Borrar(a) << endl;
- cout <<  lista.Borrar(e) << endl;
-
-
-cout << lista <<endl;
 /*
   lista2.Insertar(f);
   lista2.Insertar(g);
