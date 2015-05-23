@@ -73,96 +73,113 @@ bool TAVLCalendario:: EsVacio()
 	return (raiz==NULL);
 }
 
-void TAVLCalendario::rotacionII(TAVLCalendario &tavl)
+void TAVLCalendario::rotII()
 {
-	TNodoAVL *aux = new TNodoAVL();
-	
-	aux = tavl.raiz;
-		
-	tavl.raiz = aux;
-	
-	tavl.raiz->de = aux;
-	tavl.raiz->iz = aux->iz->iz;
-	tavl.raiz->de->iz = aux->iz->de;
+	TNodoAVL *aux;
+	aux = raiz->iz.raiz;
+	raiz->iz.raiz = raiz->iz.raiz->de.raiz;
+	aux->de.raiz = raiz;
+	raiz = aux;
 }
 
-void TAVLCalendario::rotacionDD(TAVLCalendario &tavl)
+void TAVLCalendario::rotDD()
 {
-	TNodoAVL *aux = new TNodoAVL();
-	
-	aux = tavl.raiz;
-	
-	tavl.raiz->de = aux->de->de;
-	tavl.raiz = aux->de;
-	tavl.raiz->iz = aux;
-	tavl.raiz->iz->de = aux->de->iz;
+	TNodoAVL *aux;
+	aux=raiz->de.raiz;
+	raiz->de.raiz= raiz->de.raiz->iz.raiz;
+	aux->iz.raiz = raiz;
+	raiz=aux;
 }
 
 
-void TAVLCalendario::rotacionID(TAVLCalendario &tavl)
+void TAVLCalendario::rotID()
 {
-	TNodoAVL *aux = new TNodoAVL();
-	
-	aux = tavl.raiz;
-	
-	tavl.raiz = aux->iz->de;
-	tavl.raiz->de = aux;
-	tavl.raiz->de->iz = aux->iz->de->de;
-	tavl.raiz->iz->de = aux->iz->de->iz;
+	TNodoAVL *aux;
+	aux = raiz->iz.raiz;
+	raiz->iz.raiz = aux->de.raiz->de.raiz;
+	aux->de.raiz->de.raiz = raiz;
+	raiz = aux->de.raiz;
+	aux->de.raiz = raiz->iz.raiz;
+	raiz->iz.raiz = aux;
 	
 }
 
-void TAVLCalendario::rotacionDI(TAVLCalendario &tavl)
+void TAVLCalendario::rotDI()
 {
-	TNodoAVL *aux = new TNodoAVL();
-	
-	aux = tavl.raiz;
-	
-	raiz->iz = aux;
-	raiz->iz->de = aux->de->iz->iz;
-	raiz->de->iz = aux->de->iz->de;
-	tavl.raiz = aux->de->iz;
+	TNodoAVL *aux;
+	aux = raiz->de.raiz;
+	raiz->de.raiz = aux->iz.raiz->iz.raiz;
+	aux->iz.raiz->iz.raiz = raiz;
+	raiz = aux->iz.raiz;
+	aux->iz.raiz = raiz->de.raiz;
+	raiz->de.raiz = aux;
 }
 
 
 // Inserta el elemento en el árbol
 bool TAVLCalendario:: Insertar(TCalendario &t)
 {
-	if(this->Buscar(t)) // COMPROBAMOS SI EXISTE O NO
+	if(!this->EsVacio())
 	{
-		//cout << cerr << "ERROR: El elemento ya existe"  <<endl;
-		return false;
+		if(this->Buscar(t)) // COMPROBAMOS SI EXISTE O NO
+		{
+			//cout << cerr << "ERROR: El elemento ya existe"  <<endl;
+			return false;
+		}
+		else
+		{ 
+			this->InsertarAux(t);
+			return true;
+		}
 	}
 	else
 	{
-		this->InsertarAux(t);
-		return true;
+		if(!t.EsVacio())
+		{
+			TNodoAVL *aux = new TNodoAVL();
+			aux->item = t;
+			aux->fe = 0;
+			raiz = aux;
+			return true;
+		}
 	}
 }
 
-bool TAVLCalendario:: InsertarAux(TCalendario &t)
+void TAVLCalendario:: InsertarAux(TCalendario &t)
 {
-	
-	if(raiz==NULL)
+	if(t<raiz->item)
 	{
-		TNodoAVL *aux = new TNodoAVL();
-		aux->item = t;
-		raiz = aux;
-		// equilibrado
-		return true;
+		if(raiz->iz.EsVacio())
+		{
+			TNodoAVL *aux = new TNodoAVL();
+			aux->item = t;
+			aux->fe = 0;
+			raiz->iz.raiz = aux;
+			
+		}
+		else
+			(raiz->iz).InsertarAux(t);
 	}
-    else if(t < raiz->item)
-		(raiz->iz).InsertarAux(t);
-    else if(t > raiz->item)
-		(raiz->de).InsertarAux(t);
-	else
-		return false;
+    else if(t>raiz->item)
+    {
+		if(raiz->de.EsVacio())
+		{
+			TNodoAVL *aux = new TNodoAVL();
+			aux->item = t;
+			aux->fe = 0;
+			raiz->de.raiz = aux;
+
+		}
+		else
+			(raiz->de).InsertarAux(t);
+	}
+	
+	equilibrado();
 }
 
-void TAVLCalendario ::
-/*
+
 // Borra el elemento en el árbol
-bool TACalendario:: Borrar(TCalendario &t)
+bool TAVLCalendario:: Borrar(TCalendario &t)
 {
 	if(raiz==NULL)
 		return false;
@@ -172,13 +189,13 @@ bool TACalendario:: Borrar(TCalendario &t)
 		{
 			if(raiz->de.EsVacio())
 			{
-				TNodoABB *aux = new TNodoABB();
+				TNodoAVL *aux = new TNodoAVL();
 				aux = raiz->iz.raiz;
 				raiz = aux;
 			}
 			else if(raiz->iz.EsVacio())
 			{
-				TNodoABB *aux = new TNodoABB();
+				TNodoAVL *aux = new TNodoAVL();
 				aux = raiz->de.raiz;
 				raiz = aux;
 			}
@@ -187,12 +204,23 @@ bool TACalendario:: Borrar(TCalendario &t)
 		}	
 		else // TIENE 2 HIJOS 
 		{ 
-			TNodoABB *aux = new TNodoABB(raiz->iz.Maximo()); // MAXIMO DEL ARBOL IZQUIERDO
+			/*TNodoAVL *aux = new TNodoAVL(raiz->iz.Maximo()); // MAXIMO DEL ARBOL IZQUIERDO
 			
 			aux->de = raiz->de; // COPIAMOS DERECHA
 			aux->iz = raiz->iz; // COPIAMOS IZQUIERDA
 			raiz = aux; // CAMBIAMOS POR LA RAIZ A BORRAR
-			aux == NULL; // ELIMINAMOS PUNTERO
+			aux == NULL; // ELIMINAMOS PUNTERO*/
+			
+			TNodoAVL *aux = new TNodoAVL(raiz->iz.Maximo());
+				TNodoAVL *aux2 = new TNodoAVL();
+				aux2 = raiz;
+				TCalendario *cal = new TCalendario(raiz->iz.Maximo().item);
+
+				aux->de = raiz->de;	//se cuelga la parte derecha del arbol actual, en la derecha del aux
+				aux2->iz.Borrar(*cal);
+				aux->iz = aux2->iz;
+
+				raiz = aux;
 		}
 		
 		return true;
@@ -201,11 +229,14 @@ bool TACalendario:: Borrar(TCalendario &t)
 		return (raiz->iz).Borrar(t);
 	else if(t>raiz->item)
 		return (raiz->de).Borrar(t);
+		
+	if(raiz != NULL)
+		equilibrado();
 }
 
-TNodoABB TABBCalendario:: Maximo()
+TNodoAVL TAVLCalendario:: Maximo()
 {
-	TNodoABB *aux = new TNodoABB();
+	TNodoAVL *aux = new TNodoAVL();
 	if(EsVacio())
 	{
 		return *aux;
@@ -213,17 +244,61 @@ TNodoABB TABBCalendario:: Maximo()
 	if(raiz->de.EsVacio())
 	{
 		aux=raiz;
-		Borrar(aux->item); // VOLVEMOS A LLAMAR  BORRAR PARA ELIMINAR EL NODO 
+		//Borrar(aux->item); // VOLVEMOS A LLAMAR  BORRAR PARA ELIMINAR EL NODO 
 		return *aux;
 	}
 	else
 	{
-		aux=new TNodoABB(raiz->de.Maximo());
+		aux=new TNodoAVL(raiz->de.Maximo());
 		
 		return *aux;
 	}
+}
 
-}*/
+void TAVLCalendario :: equilibrado()
+{
+	
+	 raiz->fe = raiz->de.Altura() - raiz->iz.Altura(); // CALCULAMOS FACTOR EQUILIBRIO RAIZ
+	 
+	 if(raiz->fe > 1) // ROTACION DERECHA  
+	 {
+		if(raiz->de.raiz->fe >= 0) 
+			rotDD();
+		else
+			rotDI();
+			
+		// RECALCULAMOS FE
+		actualizaFE();
+
+	 }
+	 
+	 if(raiz->fe < -1) // ROTACION IZQUIERDA
+	 {
+		 if(raiz->iz.raiz->fe <= 0) 
+			rotII();
+		 else
+			rotID();
+			
+		// RECALCULAMOS FE
+		actualizaFE();
+	}
+
+	actualizaFE();
+}
+
+void TAVLCalendario:: actualizaFE()
+{
+	raiz->fe = raiz->de.Altura() - raiz->iz.Altura();
+	if (raiz->iz.raiz != NULL)
+	{
+		raiz->iz.raiz->fe = raiz->iz.raiz->de.Altura() - raiz->iz.raiz->iz.Altura();                    
+	}
+	if (raiz->de.raiz != NULL)
+	{
+	raiz->de.raiz->fe = raiz->de.raiz->de.Altura() - raiz->de.raiz->iz.Altura();
+	}
+}
+
 // Devuelve TRUE si el elemento está en el árbol, FALSE en caso contrario
 bool TAVLCalendario::Buscar(TCalendario &c)
 {
@@ -288,7 +363,7 @@ TVectorCalendario TAVLCalendario::Inorden() const
 	return v;
 }
 // Devuelve el recorrido en inorden sobre un vector
-void TAVLCalendario:: InordenAux(const TVectorCalendario& v,int& posicion) const
+void TAVLCalendario:: InordenAux(TVectorCalendario& v,int& posicion) const
 {
 	if(raiz != NULL)
 	{
@@ -307,14 +382,14 @@ TVectorCalendario TAVLCalendario:: Preorden() const
 	// Vector del tamaño adecuado para almacenar todos los nodos
 	TVectorCalendario v(Nodos());
 	PreordenAux(v, posicion);
+	
 	return v;
 }
 
-void TAVLCalendario:: PreordenAux(const TVectorCalendario& v,int& posicion) const
+void TAVLCalendario:: PreordenAux(TVectorCalendario& v,int& posicion) const
 {
 	if(raiz != NULL)
 	{
-		int nuevaPos = posicion;
 		v[posicion] = raiz->item;
 		posicion++;
 		(raiz->iz).PreordenAux(v,posicion);
@@ -333,7 +408,7 @@ TVectorCalendario TAVLCalendario:: Postorden() const
 	return v;
 }
 
-void TAVLCalendario:: PostordenAux(const TVectorCalendario& v, int& posicion)const
+void TAVLCalendario:: PostordenAux(TVectorCalendario& v, int& posicion)const
 {
 	if(raiz != NULL)
 	{

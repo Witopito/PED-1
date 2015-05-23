@@ -27,18 +27,25 @@ class TAVLCalendario {
 		// Puntero al nodo raíz
 		TNodoAVL *raiz;
 		// Devuelve el recorrido en inorden
-		void InordenAux(const TVectorCalendario &, int &)const;
+		void InordenAux(TVectorCalendario &, int &)const;
 		// Devuelve el recorrido en preorden
-		void PreordenAux(const TVectorCalendario &, int &)const;
+		void PreordenAux(TVectorCalendario &, int &)const;
 		// Devuelve el recorrido en postorden
-		void PostordenAux(const TVectorCalendario &, int &)const;
+		void PostordenAux(TVectorCalendario &, int &)const;
+		
+		void InsertarAux(TCalendario &);
+		
+		TNodoAVL Maximo();
 		
 		void Copiar(const TAVLCalendario &);
 		
-		void rotacionDD(TAVLCalendario &tavl);
-		void rotacionID(TAVLCalendario &tavl);
-		void rotacionDI(TAVLCalendario &tavl);
-		void rotacionII(TAVLCalendario &tavl);
+		void rotDD();
+		void rotID();
+		void rotDI();
+		void rotII();
+		
+		void equilibrado();
+		void actualizaFE();
 
 	public:
 		// Constructor por defecto
@@ -74,7 +81,7 @@ class TAVLCalendario {
 		// Devuelve el recorrido en postorden sobre un vector
 		TVectorCalendario Postorden()const;
 		// Borra un TCalendario del árbol AVL
-		bool Borrar(const TCalendario &);
+		bool Borrar(TCalendario &);
 		// Devuelve el elemento TCalendario raíz del árbol AVL
 		TCalendario Raiz();
 		// Sobrecarga del operador salida
