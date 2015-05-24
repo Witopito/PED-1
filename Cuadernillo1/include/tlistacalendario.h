@@ -20,6 +20,7 @@ class TListaCalendario
   
   private:
 	TNodoCalendario *primero;
+	void copiar(const TListaCalendario &);
   public:
 	// Constructor por defecto
 	TListaCalendario();
@@ -48,17 +49,17 @@ class TListaCalendario
 	// Obtiene el elemento que ocupa la posición indicada
 	TCalendario Obtener(const TListaPos &) const;
 	// Devuelve true si el Calendario está en la lista.
-	bool Buscar(const TCalendario &);
+	bool Buscar(const TCalendario &) const;
 	// Devuelve la longitud de la lista
-	int Longitud();
+	int Longitud() const;
 	// Devuelve la primera posición en la lista
 	TListaPos Primera() const;
 	// Devuelve la última posición en la lista
 	TListaPos Ultima()const;
 	// Suma de dos sublistas en una nueva lista
-	TListaCalendario SumarSubl (int I_L1, int F_L1, TListaCalendario & L2, int I_L2, int F_L2);
+	TListaCalendario SumarSubl (int I_L1, int F_L1,const TListaCalendario & L2, int I_L2, int F_L2);
 	// Extraer un rango de nodos de la lista
-	TListaCalendario ExtraerRango (int n1, int n2);
+	TListaCalendario ExtraerRango (int n1, int n2)const;
 	//Sobrecarga del operador salida
 	friend ostream & operator<<(ostream &, const TListaCalendario &);
 	
